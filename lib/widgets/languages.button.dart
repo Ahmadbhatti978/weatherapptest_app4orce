@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:weatherapp_testtask/controller/language_controller.dart';
+import 'package:provider/provider.dart';
+import 'package:weatherapp_testtask/providers/language_controller.dart';
 
-class LanguagesButton extends StatelessWidget {
-  const LanguagesButton({
-    super.key,
-  });
+class LanguagesButtons extends StatelessWidget {
+  const LanguagesButtons({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = LanguageController.to;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        OutlinedButton(
-          onPressed: () {
-            controller.setLanguage('en_US');
-          },
-          child: Text('English'),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        OutlinedButton(
-          onPressed: () {
-            controller.setLanguage('ar_ARA');
-          },
-          child: Text('Arabic'),
-        ),
-      ],
+    var languageProvider = Provider.of<LanguageProvider>(context);
+
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          DropdownButton<String>(
+            value: languageProvider.currentLanguageCode,
+            onChanged: (value) {
+              languageProvider.setLanguage(value!);
+            },
+            items: [
+              DropdownMenuItem(
+                value: 'en',
+                child: Text('English'),
+              ),
+              DropdownMenuItem(
+                value: 'ar',
+                child: Text('Arabic'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

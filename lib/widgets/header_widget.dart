@@ -2,7 +2,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:weatherapp_testtask/controller/global_controller.dart';
+import 'package:weatherapp_testtask/providers/global_provider.dart';
 
 class HeaderWidget extends StatefulWidget {
   const HeaderWidget({Key? key}) : super(key: key);
@@ -15,13 +17,15 @@ class _HeaderWidgetState extends State<HeaderWidget> {
   String city = "";
   String date = DateFormat("yMMMMd").format(DateTime.now());
 
-  final GlobalController globalController =
-      Get.put(GlobalController(), permanent: true);
-
+  // final GlobalController globalController =
+  //     Get.put(GlobalController(), permanent: true);
+  late GlobalProvider provider;
   @override
   void initState() {
-    getAddress(globalController.getLattitude().value,
-        globalController.getLongitude().value);
+    Future.delayed(Duration.zero, () {
+      provider = Provider.of<GlobalProvider>(context, listen: false);
+      getAddress(provider.latitude, provider.longitude);
+    });
     super.initState();
   }
 

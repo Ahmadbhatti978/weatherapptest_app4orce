@@ -2,26 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:weatherapp_testtask/controller/global_controller.dart';
 import 'package:weatherapp_testtask/model/weather_data_hourly.dart';
+import 'package:weatherapp_testtask/providers/language_controller.dart';
 import 'package:weatherapp_testtask/utils/custom_colors.dart';
+import 'package:weatherapp_testtask/utils/languages.dart';
 
 class HourlyDataWidget extends StatelessWidget {
   final WeatherDataHourly weatherDataHourly;
   HourlyDataWidget({Key? key, required this.weatherDataHourly})
       : super(key: key);
+  late LanguageProvider provider;
+
+  String getTranslatedString(BuildContext context, String key) {
+    var languageProvider = Provider.of<LanguageProvider>(context);
+    return trans[languageProvider.currentLanguageCode]![key] ?? key;
+  }
 
   // card index
   RxInt cardIndex = GlobalController().getIndex();
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<LanguageProvider>(context);
     return Column(
       children: [
         Container(
           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
           alignment: Alignment.topCenter,
-          child: Text("today".tr, style: TextStyle(fontSize: 18)),
+          child: Text(getTranslatedString(context, 'today'),
+              style: TextStyle(fontSize: 18)),
         ),
         hourlyList(),
       ],

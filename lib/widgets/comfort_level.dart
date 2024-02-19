@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:weatherapp_testtask/model/weather_data_current.dart';
+import 'package:weatherapp_testtask/providers/language_controller.dart';
 import 'package:weatherapp_testtask/utils/custom_colors.dart';
+import 'package:weatherapp_testtask/utils/languages.dart';
 
 class ComfortLevel extends StatelessWidget {
   final WeatherDataCurrent weatherDataCurrent;
-  const ComfortLevel({Key? key, required this.weatherDataCurrent})
-      : super(key: key);
+  ComfortLevel({Key? key, required this.weatherDataCurrent}) : super(key: key);
+
+  late LanguageProvider provider;
+
+  String getTranslatedString(BuildContext context, String key) {
+    var languageProvider = Provider.of<LanguageProvider>(context);
+    return trans[languageProvider.currentLanguageCode]![key] ?? key;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +26,7 @@ class ComfortLevel extends StatelessWidget {
           margin:
               const EdgeInsets.only(top: 1, left: 20, right: 20, bottom: 20),
           child: Text(
-            "comfort_level".tr,
+            getTranslatedString(context, "comfort_level"),
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -34,7 +43,8 @@ class ComfortLevel extends StatelessWidget {
                       customWidths: CustomSliderWidths(
                           handlerSize: 0, trackWidth: 12, progressBarWidth: 12),
                       infoProperties: InfoProperties(
-                          bottomLabelText: "humidity".tr,
+                          bottomLabelText:
+                              getTranslatedString(context, "humidity"),
                           bottomLabelStyle: const TextStyle(
                               letterSpacing: 0.1, fontSize: 14, height: 1.5)),
                       animationEnabled: true,
@@ -55,7 +65,7 @@ class ComfortLevel extends StatelessWidget {
                   RichText(
                     text: TextSpan(children: [
                       TextSpan(
-                          text: "feels_like ".tr,
+                          text: getTranslatedString(context, "feels_like "),
                           style: TextStyle(
                               fontSize: 14,
                               height: 0.8,
@@ -79,7 +89,7 @@ class ComfortLevel extends StatelessWidget {
                   RichText(
                     text: TextSpan(children: [
                       TextSpan(
-                          text: "uv_index ".tr,
+                          text: getTranslatedString(context, "uv_index "),
                           style: TextStyle(
                               fontSize: 14,
                               height: 0.8,

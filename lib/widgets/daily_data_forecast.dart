@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:weatherapp_testtask/model/weather_data_daily.dart';
+import 'package:weatherapp_testtask/providers/language_controller.dart';
 import 'package:weatherapp_testtask/utils/custom_colors.dart';
+import 'package:weatherapp_testtask/utils/languages.dart';
 
 class DailyDataForecast extends StatelessWidget {
   final WeatherDataDaily weatherDataDaily;
-  const DailyDataForecast({Key? key, required this.weatherDataDaily})
+  DailyDataForecast({Key? key, required this.weatherDataDaily})
       : super(key: key);
+
+  late LanguageProvider provider;
+
+  String getTranslatedString(BuildContext context, String key) {
+    var languageProvider = Provider.of<LanguageProvider>(context);
+    return trans[languageProvider.currentLanguageCode]![key] ?? key;
+  }
 
   // string manipulation
   String getDay(final day) {
@@ -31,7 +41,7 @@ class DailyDataForecast extends StatelessWidget {
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(bottom: 10),
             child: Text(
-              "next_days".tr,
+              getTranslatedString(context, "next_days"),
               style:
                   TextStyle(color: CustomColors.textColorBlack, fontSize: 17),
             ),
