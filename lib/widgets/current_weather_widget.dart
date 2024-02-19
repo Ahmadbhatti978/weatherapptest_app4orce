@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:weatherapp_testtask/model/weather_data_current.dart';
+import 'package:weatherapp_testtask/providers/language_controller.dart';
 import 'package:weatherapp_testtask/utils/custom_colors.dart';
+import 'package:weatherapp_testtask/utils/languages.dart';
 
 class CurrentWeatherWidget extends StatelessWidget {
   final WeatherDataCurrent weatherDataCurrent;
 
-  const CurrentWeatherWidget({Key? key, required this.weatherDataCurrent})
+  CurrentWeatherWidget({Key? key, required this.weatherDataCurrent})
       : super(key: key);
+
+  late LanguageProvider provider;
+
+  String getTranslatedString(BuildContext context, String key) {
+    var languageProvider = Provider.of<LanguageProvider>(context);
+    return trans[languageProvider.currentLanguageCode]![key] ?? key;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +30,12 @@ class CurrentWeatherWidget extends StatelessWidget {
           height: 20,
         ),
         // more details - windspeed, humidity, clouds
-        currentWeatherMoreDetailsWidget(),
+        currentWeatherMoreDetailsWidget(context),
       ],
     );
   }
 
-  Widget currentWeatherMoreDetailsWidget() {
+  Widget currentWeatherMoreDetailsWidget(BuildContext context) {
     return Column(
       children: [
         Row(
@@ -79,7 +89,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                     width: 2,
                   ),
                   Text(
-                    "km/h".tr,
+                    getTranslatedString(context, "km/h"),
                     style: const TextStyle(fontSize: 12),
                     textAlign: TextAlign.center,
                   ),

@@ -13,15 +13,6 @@ class LanguageProvider extends ChangeNotifier {
 
   String get currentLanguageCode => _currentLanguageCode;
 
-  String getTranslatedString(BuildContext context, String key) {
-    var languageProvider = Provider.of<LanguageProvider>(context);
-    var translations = {
-      'en': {'greeting': 'Hello'},
-      'es': {'greeting': 'Hola'},
-    };
-    return translations[languageProvider.currentLanguageCode]![key] ?? key;
-  }
-
   Future<void> _loadLanguage() async {
     _prefs = await SharedPreferences.getInstance();
     _currentLanguageCode = _prefs.getString('language_code') ?? 'en';
